@@ -11,10 +11,12 @@ $LOAD_PATH.unshift(File.absolute_path("#{__dir__}/../lib"))
 
 # Requiere `lib/rn.rb` como punto de partida para cargar todas las definiciones necesarias
 require 'rn'
+#require 'rn/config'
 
 # Crea el directorio de para los books si no existe
 #initial_dir=Dir.home() +"/.my_rns"
-Dir.mkdir(Config.initial_dir) unless Dir.exists?(Config.initial_dir) 
+include RN::PathsHelper
+Dir.mkdir(root_path) unless Dir.exists?(root_path) 
 
 
 # Ejecuta, utilizando la gema dry-cli, los comandos que permiten utilizar la herramienta

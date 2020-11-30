@@ -1,6 +1,7 @@
 module RN
   module Commands
     module Notes
+      include PathsHelper
       class Create < Dry::CLI::Command
         desc 'Create a note'
 
@@ -16,6 +17,7 @@ module RN
         def call(title:, **options)
           book = options[:book]
           warn "TODO: Implementar creación de la nota con título '#{title}' (en el libro '#{book}').\nPodés comenzar a hacerlo en #{__FILE__}:#{__LINE__}."
+          File
         end
       end
 
@@ -90,7 +92,14 @@ module RN
         def call(**options)
           book = options[:book]
           global = options[:global]
-          warn "TODO: Implementar listado de las notas del libro '#{book}' (global=#{global}).\nPodés comenzar a hacerlo en #{__FILE__}:#{__LINE__}."
+          #warn "TODO: Implementar listado de las notas del libro '#{book}' (global=#{global}).\nPodés comenzar a hacerlo en #{__FILE__}:#{__LINE__}."
+          puts book.nil?
+          book_path="#{Config.initial_dir}/#{book}"
+          if !Dir.exist?(book_path)
+            warn "ERROR: the book '#{book}' hasn't been yet created"
+          else
+            puts Dir.foreach(book_path){|file| (file.chomp(".rn")) if file=~/.rn$/}
+          end
         end
       end
 
