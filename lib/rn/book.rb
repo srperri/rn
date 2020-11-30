@@ -39,11 +39,17 @@ module RN
       end
   
       def path
-        "#{root_path}/#{dirname}"
+        "#{root_path}/#{self.name}"
       end
   
       def save
         FileUtils.mkdir_p path
+      end
+
+      def rename(name)
+        old_path=path
+        self.name=name
+        File.rename(old_path,path)
       end
   
       # ...implementar el resto de los métodos necesarios para operar con los cuadernos...

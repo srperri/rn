@@ -6,12 +6,11 @@ module RN
       attr_accessor :title, :content, :book
       #attr_reader :title, :book
       #attr_accessor :text
-      def initialize(title, book, text)
+      def initialize(title, book, content)
           self.title = title
           self.book = book
-          self.text = text
+          self.content = content
       end
-      def save
     
       def self.from_file(path, book: nil)
         title = File.basename(path)
@@ -22,18 +21,22 @@ module RN
       def initialize(title, content, book: nil)
         self.title = title
         self.content = content
-        self.book = book || Book.global
+        self.book = Book.new(book) || Book.global
       end
   
       def path
-        book.path.join(filename)
+        File.join(book.path,filename)
       end
   
       def filename
-        sanitize_for_filename(title) + notes_extension
+        #sanitize_for_filename(title) + notes_extension
+        title + notes_extension
       end
   
       def save
+        file = File.new(path, "w")
+        file.puts(self.content)
+        file.close
         # TODO: Acá se crea / actualiza el archivo asociado a la nota (cuya ruta se obtiene con #path)
       end
   

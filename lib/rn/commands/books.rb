@@ -12,16 +12,8 @@ module RN
         ]
 
         def call(name:, **)
-          #warn "TODO: Implementar creación del cuaderno de notas con nombre '#{name}'.\nPodés comenzar a hacerlo en #{__FILE__}:#{__LINE__}."
-          # puts File.join(Config.initial_dir,name)
-          # if Dir.exist?(File.join(Config.initial_dir,name))
-          #   warn "ERROR: the book '#{name}' already exists"
-          # else
-          #   puts "hola"
-          #   Dir.mkdir(File.join(Config.initial_dir, name))
-          #   puts "chau"
-          # end
           book=Book.new(name)
+          ### no chequea si existe
           book.save
           book
         end
@@ -41,7 +33,11 @@ module RN
 
         def call(name: nil, **options)
           global = options[:global]
-          warn "TODO: Implementar borrado del cuaderno de notas con nombre '#{name}' (global=#{global}).\nPodés comenzar a hacerlo en #{__FILE__}:#{__LINE__}."
+          #warn "TODO: Implementar borrado del cuaderno de notas con nombre '#{name}' (global=#{global}).\nPodés comenzar a hacerlo en #{__FILE__}:#{__LINE__}."
+          book= global ? Book.global : Book.new(name)  
+          puts book.path         
+          book.notes.each {|note| puts note.title}#note.delete}
+          puts "delete"#book.delete unless global
         end
       end
 
@@ -53,10 +49,7 @@ module RN
         ]
 
         def call(*)
-          Book.all.map do |book| 
-            puts "#{book.name}"
-          end
-          #warn "TODO: Implementar listado de los cuadernos de notas.\nPodés comenzar a hacerlo en #{__FILE__}:#{__LINE__}."
+          Book.all.each {|book| puts "#{book.name}"}
         end
       end
 
@@ -73,15 +66,9 @@ module RN
         ]
 
         def call(old_name:, new_name:, **)
-          #warn "TODO: Implementar renombrado del cuaderno de notas con nombre '#{old_name}' para que pase a llamarse '#{new_name}'.\nPodés comenzar a hacerlo en #{__FILE__}:#{__LINE__}."
-          if !Dir.exist?(File.join(Config.initial_dir,old_name))
-            warn "ERROR: the book '#{old_name}' doesn't exists"
-          elsif Dir.exist?(File.join(Config.initial_dir,new_name))
-            warn "ERROR: the book '#{new_name}' already exists"
-            
-          else
-            File.rename(File.join(Config.initial_dir,old_name), File.join(Config.initial_dir,new_name))
-          end
+          book=Book.new(old_name)
+          book.rename(new_name)
+          puts "#{old_name}->#{new_name}"
         end
       end
     end
