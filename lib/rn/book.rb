@@ -51,6 +51,12 @@ module RN
         self.name=name
         File.rename(old_path,path)
       end
+
+      def delete
+        notes.each {|note| note.delete}
+        File.delete(path) unless global?
+      end
+
   
       # ...implementar el resto de los métodos necesarios para operar con los cuadernos...
     end

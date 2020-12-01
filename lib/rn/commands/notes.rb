@@ -15,7 +15,7 @@ module RN
         ]
 
         def call(title:, **options)
-          book = options[:book]
+          book = options[:book] ? Book.new(options[:book]) : nil
           content = STDIN.gets.chomp
           note = Note.new(title,content,book:book)
           note.save
@@ -93,16 +93,11 @@ module RN
         ]
 
         def call(**options)
-          book = options[:book]
+          book_name = options[:book]
           global = options[:global]
+          book = global ? Book.global : Book.new(book_name)
           #warn "TODO: Implementar listado de las notas del libro '#{book}' (global=#{global}).\nPodés comenzar a hacerlo en #{__FILE__}:#{__LINE__}."
-          puts book.nil?
-          book_path="#{Config.initial_dir}/#{book}"
-          if !Dir.exist?(book_path)
-            warn "ERROR: the book '#{book}' hasn't been yet created"
-          else
-            puts Dir.foreach(book_path){|file| (file.chomp(".rn")) if file=~/.rn$/}
-          end
+          book.notes.each {|note| puts note.title}
         end
       end
 

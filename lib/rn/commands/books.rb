@@ -12,7 +12,7 @@ module RN
         ]
 
         def call(name:, **)
-          book=Book.new(name)
+          book = Book.new(name)
           ### no chequea si existe
           book.save
           book
@@ -34,10 +34,8 @@ module RN
         def call(name: nil, **options)
           global = options[:global]
           #warn "TODO: Implementar borrado del cuaderno de notas con nombre '#{name}' (global=#{global}).\nPodés comenzar a hacerlo en #{__FILE__}:#{__LINE__}."
-          book= global ? Book.global : Book.new(name)  
-          puts book.path         
-          book.notes.each {|note| puts note.title}#note.delete}
-          puts "delete"#book.delete unless global
+          book = global ? Book.global : Book.new(name)  
+          book.delete
         end
       end
 
