@@ -95,9 +95,17 @@ module RN
         def call(**options)
           book_name = options[:book]
           global = options[:global]
-          book = global ? Book.global : Book.new(book_name)
-          #warn "TODO: Implementar listado de las notas del libro '#{book}' (global=#{global}).\nPodés comenzar a hacerlo en #{__FILE__}:#{__LINE__}."
-          book.notes.each {|note| puts note.title}
+          books = if global
+            [Book.global]
+          elsif book_name
+            [Book.new(book_name)]
+          else
+            Book.all
+          end
+          books.each do |book|
+            puts ">#{book.name}"
+            book.notes.each {|note| puts "    >#{note.title}"}
+          end
         end
       end
 
