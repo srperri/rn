@@ -16,15 +16,12 @@ module RN
       end
   
       def self.all
-        found = Dir["#{root_path}/*"].select { |e| File.directory?(e) }.map do |book_path|
+        found = Dir["#{Book.global.root_path}/*"].select { |e| File.directory?(e) }.map do |book_path|
           Book.from_directory(book_path)
         end
         # Se fuerza la inclusión del cuaderno global en caso que aún no exista
         found.unshift(Book.global) unless found.any?(&:global?)
         found
-      end
-      def self.root_path
-        "#{Dir.home}/.my_rns"
       end
 
       def initialize(name)
@@ -65,7 +62,5 @@ module RN
         File.delete(path) unless global?
       end
 
-  
-      # ...implementar el resto de los métodos necesarios para operar con los cuadernos...
     end
   end

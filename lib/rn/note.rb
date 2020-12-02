@@ -29,8 +29,7 @@ module RN
     end
 
     def filename
-      #sanitize_for_filename(title) + notes_extension
-      title + notes_extension
+      sanitized_for_filename(title) + notes_extension
     end
 
     def save

@@ -1,7 +1,6 @@
 module RN
   module Commands
     module Notes
-      include PathsHelper
       class Create < Dry::CLI::Command
         desc 'Create a note'
 
@@ -16,7 +15,8 @@ module RN
 
         def call(title:, **options)
           book = options[:book] ? Book.new(options[:book]) : nil
-          content = STDIN.gets.chomp
+          puts "ingrese 'END' para finalizar"
+          content = STDIN.gets("END").chomp("END")
           note = Note.new(title,content,book:book)
           note.save
           note
@@ -62,7 +62,8 @@ module RN
           book_name = options[:book]
           book = book_name ? Book.new(book_name) : Book.global
           note = book.note(title)
-          note.content=STDIN.gets.chomp
+          puts "ingrese 'END' para finalizar"
+          note.content=STDIN.gets("END").chomp("END")
           note.save
 
 

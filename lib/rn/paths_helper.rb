@@ -1,12 +1,13 @@
 # lib/rn/paths_helper.rb
 module RN
     module PathsHelper
+
       def root_path
         "#{Dir.home}/.my_rns"
       end
   
       def sanitized_for_filename(string)
-        string.gsub(/[\\]/, '_') # ¡Esto es una simplificación! Implementá los reemplazos que consideres necesarios
+        string.gsub(/[^a-z0-9\-]/i, '_') 
       end
   
       def notes_extension
