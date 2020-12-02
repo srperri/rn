@@ -13,7 +13,6 @@ $LOAD_PATH.unshift(File.absolute_path("#{__dir__}/../lib"))
 require 'rn'
 
 # Crea el directorio de para los books si no existe, y el book global
-include RN::PathsHelper
 RN.setup
 
 # Ejecuta, utilizando la gema dry-cli, los comandos que permiten utilizar la herramienta

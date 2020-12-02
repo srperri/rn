@@ -6,9 +6,8 @@ module RN
   autoload :Note, 'rn/note'
 
   def self.setup
-    g_path=Book.global.path
-    r_path=File.dirname(g_path)
-    Dir.mkdir(r_path) unless Dir.exists?(r_path) 
-    Dir.mkdir(g_path) unless Dir.exists?(g_path) 
+    global_book=Book.global
+    Dir.mkdir(global_book.root_path) unless Dir.exists?(global_book.root_path) 
+    Dir.mkdir(global_book.path) unless Dir.exists?(global_book.path) 
   end
 end

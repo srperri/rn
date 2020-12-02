@@ -13,7 +13,10 @@ module RN
       def notes_extension
         '.rn'
       end
-  
+
+      def self.included(base)
+        base.extend self
+      end
       # ...implementar otros métodos de soporte sobre rutas que consideres necesarios...
     end
   end

@@ -12,10 +12,15 @@ module RN
         ]
 
         def call(name:, **)
-          book = Book.new(name)
-          ### no chequea si existe
-          book.save
-          book
+          begin
+            book = Book.new(name)
+            ### no chequea si existe
+            book.save
+            puts "El cuaderno #{name.inspect} fue creado correctamente."
+          rescue StandardError => e # Esto es una simplificación, de ser necesario podrías tener manejadores distintos según la excepción
+            warn "El cuaderno #{name.inspect} no pudo eliminarse: #{e.message}."
+            exit 1
+          end
         end
       end
 
@@ -32,10 +37,15 @@ module RN
         ]
 
         def call(name: nil, **options)
-          global = options[:global]
-          #warn "TODO: Implementar borrado del cuaderno de notas con nombre '#{name}' (global=#{global}).\nPodés comenzar a hacerlo en #{__FILE__}:#{__LINE__}."
-          book = global ? Book.global : Book.new(name)  
-          book.delete
+          begin
+            global = options[:global]
+            book = global ? Book.global : Book.new(name)  
+            book.delete
+            puts "El cuaderno #{book.name.inspect} fue eliminado junto con su contenido."
+          rescue StandardError => e # Esto es una simplificación, de ser necesario podrías tener manejadores distintos según la excepción
+            warn "El cuaderno #{book.name.inspect} no pudo eliminarse: #{e.message}."
+            exit 1
+          end
         end
       end
 
@@ -47,7 +57,10 @@ module RN
         ]
 
         def call(*)
-          Book.all.each {|book| puts "#{book.name}"}
+          books=Book.all
+          puts "Lista de cuadernos:\n"
+          books.each {|book| puts "   - #{book.name.inspect}"}
+          puts "\n  Total: #{books.size} cuaderno/s."
         end
       end
 
@@ -64,9 +77,14 @@ module RN
         ]
 
         def call(old_name:, new_name:, **)
-          book=Book.new(old_name)
-          book.rename(new_name)
-          puts "#{old_name}->#{new_name}"
+          begin
+            book=Book.new(old_name)
+            book.rename(new_name)
+            puts "El cuaderno #{old_name.inspect} fue renombrado como #{new_name.inspect}."
+          rescue StandardError => e # Esto es una simplificación, de ser necesario podrías tener manejadores distintos según la excepción
+            warn "No pudo renombrarse el cuaderno #{old_name.inspect} con #{new_name.inspect}: #{e.message}."
+            exit 1
+          end
         end
       end
     end
