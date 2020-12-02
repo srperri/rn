@@ -12,9 +12,9 @@ module RN
   # módulos del modelo de datos.
   # Por ejemplo:
   # autoload :Note, 'rn/note'
-end
-# module Config
-#   def self.initial_dir
-#       Dir.home() +"/.my_rns"
-#   end
-# end
+  # def self.setup
+  #   Dir.mkdir(root_path) unless Dir.exists?(root_path)
+  #   global=Book.global
+  #   Dir.mkdir(global.path) unless Dir.exists?(global.path) 
+  # end
+ end

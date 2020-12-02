@@ -23,7 +23,10 @@ module RN
         found.unshift(Book.global) unless found.any?(&:global?)
         found
       end
-  
+      def self.root_path
+        "#{Dir.home}/.my_rns"
+      end
+
       def initialize(name)
         self.name = name
       end
@@ -36,6 +39,11 @@ module RN
         Dir["#{path}/*#{notes_extension}"].map do |note_path|
           Note.from_file(note_path, book: self)
         end
+      end
+  
+      def note(title)
+        note_path="#{path}/#{title}#{notes_extension}"
+        Note.from_file(note_path, book: self)
       end
   
       def path

@@ -37,8 +37,12 @@ module RN
         ]
 
         def call(title:, **options)
-          book = options[:book]
-          warn "TODO: Implementar borrado de la nota con título '#{title}' (del libro '#{book}').\nPodés comenzar a hacerlo en #{__FILE__}:#{__LINE__}."
+          book_name = options[:book]
+          book = book_name ? Book.new(book_name) : Book.global
+          note = book.note(title)
+          note.delete
+          #warn "TODO: Implementar borrado de la nota con título '#{title}' (del libro '#{book}').\nPodés comenzar a hacerlo en #{__FILE__}:#{__LINE__}."
+
         end
       end
 
@@ -55,8 +59,15 @@ module RN
         ]
 
         def call(title:, **options)
-          book = options[:book]
-          warn "TODO: Implementar modificación de la nota con título '#{title}' (del libro '#{book}').\nPodés comenzar a hacerlo en #{__FILE__}:#{__LINE__}."
+          book_name = options[:book]
+          book = book_name ? Book.new(book_name) : Book.global
+          note = book.note(title)
+          note.content=STDIN.gets.chomp
+          note.save
+
+
+
+          #warn "TODO: Implementar modificación de la nota con título '#{title}' (del libro '#{book}').\nPodés comenzar a hacerlo en #{__FILE__}:#{__LINE__}."
         end
       end
 
@@ -74,8 +85,10 @@ module RN
         ]
 
         def call(old_title:, new_title:, **options)
-          book = options[:book]
-          warn "TODO: Implementar cambio del título de la nota con título '#{old_title}' hacia '#{new_title}' (del libro '#{book}').\nPodés comenzar a hacerlo en #{__FILE__}:#{__LINE__}."
+          book_name = options[:book]
+          book = book_name ? Book.new(book_name) : Book.global
+          note = book.note(old_title)
+          note.retitle(new_title) 
         end
       end
 
@@ -123,7 +136,11 @@ module RN
 
         def call(title:, **options)
           book = options[:book]
-          warn "TODO: Implementar vista de la nota con título '#{title}' (del libro '#{book}').\nPodés comenzar a hacerlo en #{__FILE__}:#{__LINE__}."
+          book_name = options[:book]
+          book = book_name ? Book.new(book_name) : Book.global
+          note = book.note(title)
+          puts "Titulo: #{note.title}"
+          puts "#{note.content}" 
         end
       end
     end
