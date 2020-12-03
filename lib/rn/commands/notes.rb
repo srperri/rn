@@ -15,11 +15,11 @@ module RN
 
         def call(title:, **options)
           book = options[:book] ? Book.new(options[:book]) : nil
-          puts "ingrese 'END' para finalizar"
+          puts "ingrese el contenido de la nota y 'END' para finalizar"
           content = STDIN.gets("END").chomp("END")
           note = Note.new(title,content,book:book)
           note.save
-          note
+          puts "La nota #{title.inspect} fue guardada correctamente en el libro #{note.book.name.inspect }"
           #warn "TODO: Implementar creación de la nota con título '#{title}' (en el libro '#{book}').\nPodés comenzar a hacerlo en #{__FILE__}:#{__LINE__}."
         end
       end
@@ -41,6 +41,7 @@ module RN
           book = book_name ? Book.new(book_name) : Book.global
           note = book.note(title)
           note.delete
+          puts "La nota #{title.inspect} fue eliminada del libro #{note.book.name.inspect }"
           #warn "TODO: Implementar borrado de la nota con título '#{title}' (del libro '#{book}').\nPodés comenzar a hacerlo en #{__FILE__}:#{__LINE__}."
 
         end
@@ -62,12 +63,10 @@ module RN
           book_name = options[:book]
           book = book_name ? Book.new(book_name) : Book.global
           note = book.note(title)
-          puts "ingrese 'END' para finalizar"
+          puts "ingrese el nuevo contenido de la nota y 'END' para finalizar"
           note.content=STDIN.gets("END").chomp("END")
           note.save
-
-
-
+          puts "Se actualizó el contenido de la nota #{title.inspect} en el libro #{note.book.name.inspect }"
           #warn "TODO: Implementar modificación de la nota con título '#{title}' (del libro '#{book}').\nPodés comenzar a hacerlo en #{__FILE__}:#{__LINE__}."
         end
       end
@@ -90,6 +89,13 @@ module RN
           book = book_name ? Book.new(book_name) : Book.global
           note = book.note(old_title)
           note.retitle(new_title) 
+          puts "El título de la nota #{old_title.inspect} del cuaderno #{note.book.name.inspect} fue cambiado a #{note.title.inspect}"
+        rescue SystemCallError => e
+          warn "La nota  #{old_title.inspect} no existe: #{e.message}."
+          exit 1
+        rescue StandardError => e # Esto es una simplificación, de ser necesario podrías tener manejadores distintos según la excepción
+          warn "No pudo retitularse la nota  #{old_title.inspect} con #{new_title.inspect}: #{e.message}."
+          exit 1
         end
       end
 
