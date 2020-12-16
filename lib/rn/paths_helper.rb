@@ -14,6 +14,10 @@ module RN
         '.rn'
       end
 
+      def export_extension
+        '.html'
+      end
+
       def self.included(base)
         base.extend self
       end
