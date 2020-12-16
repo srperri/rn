@@ -152,23 +152,45 @@ module RN
       end
 
       class Export < Dry::CLI::Command
-        desc 'Export a note'
+        desc 'Export notes'
 
-        argument :title, required: true, desc: 'Title of the note'
-        option :book, type: :string, desc: 'Book'
+        argument :title, required: false, desc: 'Title of the note'
+        option :book, type: :string, desc: 'Notes from a Book'
+        option :to, type: :string, desc: 'Target path'
+        option :global, type: :boolean, default: false, desc: 'Notes from the global book'
 
         example [
-          'todo                        # Shows a note titled "todo" from the global book',
-          '"New note" --book "My book" # Shows a note titled "New note" from the book "My book"',
-          'thoughts --book Memoires    # Shows a note titled "thoughts" from the book "Memoires"'
+          'todo                        # Exports a note titled "todo" from the global book',
+          '"New note" --book "My book" # Exports a note titled "New note" from the book "My book"',
+          '                            # Exports notes from all books (including the global book)',
+          '--global                    # Exports notes from the global book',
+          '--book "My book"            # Exports notes from the book named "My book"',
+          '--book Memoires             # Exports notes from the book named "Memoires"'
         ]
 
-        def call(title:, **options)
-          book = options[:book]
+        def call(title: nil, **options)
+          puts "#{title.inspect}"
+          to_path=(options[:to]||Dir.home)
+          #Dir.mkdir(to_path) unless Dir.exists?(to_path)
           book_name = options[:book]
-          book = book_name ? Book.new(book_name) : Book.global
-          note = book.note(title)
-          note.export
+          if ! title.nil?        # single Note
+            book = book_name ? Book.new(book_name) : Book.global
+            note = book.note(title)
+            note.export(to_path:to_path)
+          else                  # multiple notes
+            global = options[:global]
+            books = if book_name
+                      [Book.new(book_name)]
+                    elsif global or !title.nil?
+                      [Book.global]
+                    else
+                      Book.all
+                    end
+            books.each do |book|
+              puts ">#{book.name}"
+              book.notes.each {|note| note.export(to_path:to_path,make_book_dir:true)}
+            end
+          end
         end
       end
     end
