@@ -169,9 +169,7 @@ module RN
         ]
 
         def call(title: nil, **options)
-          puts "#{title.inspect}"
           to_path=(options[:to]||Dir.home)
-          #Dir.mkdir(to_path) unless Dir.exists?(to_path)
           book_name = options[:book]
           if ! title.nil?        # single Note
             book = book_name ? Book.new(book_name) : Book.global

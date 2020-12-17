@@ -56,7 +56,7 @@ module RN
     def export(to_path:,make_book_dir:false)
       
       to_path+='/'+book.name if :make_book_dir
-      Dir.mkdir(to_path) unless Dir.exists?(to_path)
+      FileUtils.mkpath(to_path) unless Dir.exists?(to_path)
               
       file = File.new(to_path+'/'+title+export_extension, "w")
       file.puts(Markdown.new(content).to_html) 
