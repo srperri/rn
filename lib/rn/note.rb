@@ -47,6 +47,21 @@ module RN
       self.title=new_title.dup
       File.rename(old_path,path)
     end
+
+    def export_path
+      File.join(File.dirname(path),File.basename(path,notes_extension) + export_extension)
+    end
+
+
+    def export(to_path:,make_book_dir:false)
+      
+      to_path+='/'+book.name if :make_book_dir
+      FileUtils.mkpath(to_path) unless Dir.exists?(to_path)
+              
+      file = File.new(to_path+'/'+title+export_extension, "w")
+      file.puts(Markdown.new(content).to_html) 
+      file.close
+    end
     # ...implementar el resto de los métodos necesarios para operar con las notas...
   end
 end

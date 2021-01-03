@@ -11,7 +11,9 @@ $LOAD_PATH.unshift(File.absolute_path("#{__dir__}/../lib"))
 
 # Requiere `lib/rn.rb` como punto de partida para cargar todas las definiciones necesarias
 require 'rn'
-
+require 'bundler'
+Bundler.setup
+require 'markdown'
 # Crea el directorio de para los books si no existe, y el book global
 RN.setup
 
