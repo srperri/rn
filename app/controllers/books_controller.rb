@@ -3,7 +3,7 @@ class BooksController < ApplicationController
 
   # GET /books
   def index
-    @books = Book.all
+    @books = Book.where(user_id: current_user) # Book.all
   end
 
   # GET /books/1
