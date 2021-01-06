@@ -13,6 +13,7 @@ class BooksController < ApplicationController
   # GET /books/new
   def new
     @book = Book.new
+    @book.user_id = current_user
   end
 
   # GET /books/1/edit
@@ -22,6 +23,7 @@ class BooksController < ApplicationController
   # POST /books
   def create
     @book = Book.new(book_params)
+    @book.user_id = current_user.id
 
     if @book.save
       redirect_to @book, notice: 'Book was successfully created.'
@@ -53,6 +55,7 @@ class BooksController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def book_params
-      params.require(:book).permit(:user_id, :title)
+      #params.require(:book).permit(:user_id, :title)
+      params.require(:book).permit(:title)
     end
 end
