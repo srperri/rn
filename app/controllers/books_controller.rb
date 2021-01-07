@@ -3,7 +3,7 @@ class BooksController < ApplicationController
 
   # GET /books
   def index
-    @books = Book.where(user_id: current_user) # Book.all
+    @books = current_user.books  #Book.where(user_id: current_user) # Book.all
   end
 
   # GET /books/1
@@ -12,8 +12,9 @@ class BooksController < ApplicationController
 
   # GET /books/new
   def new
-    @book = Book.new
-    @book.user_id = current_user
+    @book = current_user.books.new
+    #@book = Book.new
+    #@book.user_id = current_user
   end
 
   # GET /books/1/edit
@@ -22,8 +23,9 @@ class BooksController < ApplicationController
 
   # POST /books
   def create
-    @book = Book.new(book_params)
-    @book.user_id = current_user.id
+    @book = current_user.books.new(book_params)
+    #@book = Book.new(book_params)
+    #@book.user_id = current_user.id
 
     if @book.save
       redirect_to @book, notice: 'Book was successfully created.'
