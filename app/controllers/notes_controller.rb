@@ -1,9 +1,11 @@
 class NotesController < ApplicationController
+  before_action :set_book , only: [:new, :index]
   before_action :set_note, only: [:show, :edit, :update, :destroy]
 
   # GET /notes
   def index
-    @notes = Note.all
+    #@notes = Note.all
+    @notes = @book.notes
   end
 
   # GET /notes/1
@@ -12,7 +14,7 @@ class NotesController < ApplicationController
 
   # GET /notes/new
   def new
-    @note = Note.new
+    @note = @book.notes.new
   end
 
   # GET /notes/1/edit
@@ -47,8 +49,14 @@ class NotesController < ApplicationController
 
   private
     # Use callbacks to share common setup or constraints between actions.
+    def set_book
+      @book = Book.find(params[:book_id])
+    end
+
+    # Use callbacks to share common setup or constraints between actions.
     def set_note
       @note = Note.find(params[:id])
+      @book = Book.find(@note.book_id)
     end
 
     # Only allow a list of trusted parameters through.
