@@ -10,9 +10,11 @@ class Users::RegistrationsController < Devise::RegistrationsController
   # end
 
   # POST /resource
-  # def create
-  #   super
-  # end
+  def create
+    super
+    global = current_user.books.new(title: '__global__', is_global: true)
+    global.save
+  end
 
   # GET /resource/edit
   # def edit

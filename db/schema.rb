@@ -10,13 +10,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_01_07_034001) do
+ActiveRecord::Schema.define(version: 2021_01_08_054904) do
 
   create_table "books", force: :cascade do |t|
     t.integer "user_id", null: false
     t.string "title", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.boolean "is_global", default: false
     t.index ["title"], name: "index_books_on_title", unique: true
     t.index ["user_id"], name: "index_books_on_user_id"
   end
