@@ -1,4 +1,5 @@
 class NotesController < ApplicationController
+  require 'markdown'
   before_action :set_book , only: [:new, :index]
   before_action :set_note, only: [:show, :edit, :update, :destroy]
 
@@ -10,7 +11,8 @@ class NotesController < ApplicationController
 
   # GET /notes/1
   def show
-  end
+    @content_as_html=Markdown.new(@note.content).to_html
+  end 
 
   # GET /notes/new
   def new
@@ -44,23 +46,29 @@ class NotesController < ApplicationController
   # DELETE /notes/1
   def destroy
     @note.destroy
-    redirect_to notes_url, notice: 'Note was successfully destroyed.'
+    redirect_to @book, notice: 'Note was successfully destroyed.'
   end
 
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_book
-      @book = Book.find(params[:book_id])
+      @book = current_user.books.find(params[:book_id])
     end
 
     # Use callbacks to share common setup or constraints between actions.
     def set_note
       @note = Note.find(params[:id])
-      @book = Book.find(@note.book_id)
+      @book = current_user.books.find(@note.book_id)
     end
 
     # Only allow a list of trusted parameters through.
     def note_params
       params.require(:note).permit(:book_id, :title, :content)
     end
+
+    def content_as_html
+      markdown = Redcarpet::Markdown.new(Redcarpet::Render::HTML, autolink: true)
+      markdown.render(@note.content)
+    end
+
 end

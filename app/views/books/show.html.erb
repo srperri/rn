@@ -1,13 +1,13 @@
 <p id="notice"><%= notice %></p>
 
-<p>
+<%#p>
   <strong>User:</strong>
   <%= @book.user_id %>
-</p>
+<%#/p%>
 
 <p>
-  <strong>Title:</strong>
-  <%= @book.title %>
+  <h1>Book: <%= @book.title %></h1>
+  
   <p id="notice"><%= notice %></p>
 
   <h2>Notes</h2>
@@ -15,7 +15,6 @@
   <table>
     <thead>
       <tr>
-        <th>Book</th>
         <th>Title</th>
         <th>Content</th>
         <th colspan="3"></th>
@@ -25,9 +24,8 @@
     <tbody>
       <% @book.notes.each do |note| %>
         <tr>
-          <td><%= note.book_id %></td>
           <td><%= note.title %></td>
-          <td><%= note.content %></td>
+          <td><%= note.content.size>8 ? note.content.first(5) + '...' : note.content.first(8)  %></td>
           <td><%= link_to 'Show', note %></td>
           <td><%= link_to 'Edit', edit_note_path(note) %></td>
           <td><%= link_to 'Destroy', note, method: :delete, data: { confirm: 'Are you sure?' } %></td>
