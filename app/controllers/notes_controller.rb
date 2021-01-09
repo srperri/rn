@@ -1,5 +1,4 @@
 class NotesController < ApplicationController
-  require 'markdown'
   before_action :set_book , only: [:new, :index]
   before_action :set_note, only: [:show, :edit, :update, :destroy]
 
@@ -11,7 +10,6 @@ class NotesController < ApplicationController
 
   # GET /notes/1
   def show
-    @content_as_html=Markdown.new(@note.content).to_html
   end 
 
   # GET /notes/new
@@ -66,9 +64,6 @@ class NotesController < ApplicationController
       params.require(:note).permit(:book_id, :title, :content)
     end
 
-    def content_as_html
-      markdown = Redcarpet::Markdown.new(Redcarpet::Render::HTML, autolink: true)
-      markdown.render(@note.content)
-    end
+    
 
 end

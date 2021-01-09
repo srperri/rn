@@ -1,9 +1,18 @@
 class BooksController < ApplicationController
-  before_action :set_book, only: [:show, :edit, :update, :destroy]
+  before_action :set_book, only: [:show, :edit, :update, :destroy, :list_notes]
 
   # GET /books
   def index
     @books = current_user.books  #Book.where(user_id: current_user) # Book.all
+  end
+  
+  # GET /books/list_all_notes
+  def list_all_notes
+    @books = current_user.books  #Book.where(user_id: current_user) # Book.all
+  end
+
+  # GET /books/1/list_notes
+  def list_notes
   end
 
   # GET /books/1
