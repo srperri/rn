@@ -10,4 +10,8 @@ class Book < ApplicationRecord
     is_global
   end
 
+  def clear
+    notes.destroy_all
+  end
+
 end

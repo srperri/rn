@@ -23,7 +23,8 @@ class NotesController < ApplicationController
 
   # POST /notes
   def create
-    @note = Note.new(note_params)
+    @book = current_user.books.find(note_params[:book_id])
+    @note = @book.notes.new(note_params)
 
     if @note.save
       redirect_to @note, notice: 'Note was successfully created.'

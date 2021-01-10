@@ -54,8 +54,13 @@ class BooksController < ApplicationController
 
   # DELETE /books/1
   def destroy
-    @book.destroy
-    redirect_to books_url, notice: 'Book was successfully destroyed.'
+    if @book.global?
+      @book.clear
+      redirect_to books_url, notice: 'Global book was successfully cleared.'
+    else
+      @book.destroy
+      redirect_to books_url, notice: 'Book was successfully destroyed.'
+    end
   end
 
   private
