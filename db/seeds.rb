@@ -11,17 +11,16 @@ end
 
 users=User.all
 
-p users.size
-
 users.each_with_index { |user,i|
     p user.email
+    user.global_book.notes.create!(title: "note assorted", content: "I'm in the global book!")
     (4-(user.id)).times do |j|
         p "   book ##{j} of #{user.email}"
-        book = user.books.create!(title: "book ##{j} of #{user.email}")
+        book = user.books.create!(title: "book ##{j}")
         5.times do |k|
-            book.notes.create!(title: "note ##{k} of book ##{j} of #{user.email}", content: "content accepting **Markdown**  of note ##{k}")
+            book.notes.create!(title: "note ##{k}", content: "content accepting **Markdown**  of note ##{k}")
         end
-        book.notes.create!(title: "note #6 of book ##{j} of #{user.email}", content: "# contenido con imágenes  ![](https://logo.clearbit.com/rubyonrails.org)  ![titulo](http://www.ruby-lang.org/images/header-ruby-logo.png)  ")
+        book.notes.create!(title: "note #6", content: "# contenido con imágenes  ![](https://logo.clearbit.com/rubyonrails.org)  ![titulo](http://www.ruby-lang.org/images/header-ruby-logo.png)  ")
 
     end
 }
