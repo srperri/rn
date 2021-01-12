@@ -1,0 +1,19 @@
+<p>
+    <strong>Book:</strong>
+    <%= book.title %>
+</p>
+<% book.notes.each do |note| %>
+    <div style="border-top: 1px solid lightgray;    margin: 20px;">
+        <p>
+            <strong>Note:</strong>
+            <%= note.title %>
+        </p>
+
+        <p>
+        <div style="border-top: 1px solid lightgray; padding: 20px;">
+            <%= note.content_as_html.html_safe %>
+        </div>
+
+        </p>
+    </div>
+<% end %>
