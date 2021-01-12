@@ -1,0 +1,47 @@
+<p id="notice"><%= notice %></p>
+
+<%#p>
+  <strong>User:</strong>
+  <%= @book.user_id %>
+<%#/p%>
+
+<p>
+  <h1>Book: <%= @book.title %></h1>
+  
+  <p id="notice"><%= notice %></p>
+
+  <h3>Notes </h3>
+  <%= link_to 'List Notes', list_notes_book_path(@book) %> 
+  <br>
+  <br>
+    
+  <table>
+    <thead>
+      <tr>
+        <th>Title</th>
+        <th>Content</th>
+        <th colspan="3"></th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% @book.notes.each do |note| %>
+        <tr>
+          <td><%= note.title %></td>
+          <td><%= note.content.size>8 ? note.content.first(5) + '...' : note.content.first(8)  %></td>
+          <td><%= link_to 'Show', note %></td>
+          <td><%= link_to 'Edit', edit_note_path(note) %></td>
+          <td><%= link_to 'Destroy', note, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+
+  <br>
+
+  <%= link_to 'New Note', new_note_path(book_id: @book.id)%>
+
+</p>
+
+<%= link_to 'Edit', edit_book_path(@book) %> |
+<%= link_to 'Back', books_path %>
