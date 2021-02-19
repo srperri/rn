@@ -2,6 +2,8 @@
 
 <h1>Books</h1>
 <%= link_to 'List all Notes', list_all_notes_books_path %>
+<%= link_to 'Download all Notes', download_all_books_path %></td>
+
 <table>
   <thead>
     <tr>
@@ -17,6 +19,7 @@
         <td><%= '<global>' if book.global? %></td>
         <td><%= book.title %></td>
         <td><%= link_to 'Show', book %></td>
+        <td><%= link_to 'Download', download_book_path(book) %></td>
         <td><%= link_to 'Edit', edit_book_path(book) %></td>
         <td><%= link_to (book.global? ? 'Clear' : 'Destroy'), book, method: :delete, data: { confirm: 'Are you sure?' }  %></td>
       </tr>

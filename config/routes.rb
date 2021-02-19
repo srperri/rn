@@ -1,11 +1,17 @@
 Rails.application.routes.draw do
-  resources :notes
+  resources :notes, except: :index  do 
+    member do
+      get 'download'
+    end
+  end
   resources :books do 
     collection do
       get 'list_all_notes'
+      get 'download_all'
     end
     member do
       get 'list_notes'
+      get 'download'
     end
   end
   devise_for :users, controllers: { sessions: 'users/sessions' }
