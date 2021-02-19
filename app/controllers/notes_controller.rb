@@ -1,13 +1,8 @@
 class NotesController < ApplicationController
-  before_action :set_book , only: [:new, :index]
-  before_action :set_note, only: [:show, :edit, :update, :destroy]
+  before_action :set_note, only: [:show, :edit, :update, :destroy, :download]
+  before_action :set_book , except: [:create]
 
-  # GET /notes
-  def index
-    #@notes = Note.all
-    @notes = @book.notes
-  end
-
+  include ApplicationHelper
   # GET /notes/1
   def show
   end 
@@ -48,16 +43,22 @@ class NotesController < ApplicationController
     redirect_to @book, notice: 'Note was successfully destroyed.'
   end
 
+  # DOWNLOAD /notes/1/download
+  def download 
+    send_data @note.content_as_html.html_safe, 
+              filename: "#{sanitized_for_filename(@note.title)}.html",
+              type: "application/text"
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_book
-      @book = current_user.books.find(params[:book_id])
+      @book = current_user.books.find(params[:book_id]||@note.book_id)
     end
 
     # Use callbacks to share common setup or constraints between actions.
     def set_note
-      @note = Note.find(params[:id])
-      @book = current_user.books.find(@note.book_id)
+      @note = current_user.notes.find(params[:id])
     end
 
     # Only allow a list of trusted parameters through.

@@ -1,20 +1,13 @@
 class BooksController < ApplicationController
-  before_action :set_book, only: [:show, :edit, :update, :destroy, :list_notes]
+  before_action :set_book, only: [:show, :edit, :update, :destroy, :list_notes, :download]
 
+  include ApplicationHelper
+  
   # GET /books
   def index
-    @books = current_user.books  #Book.where(user_id: current_user) # Book.all
+    @books = current_user.books 
   end
   
-  # GET /books/list_all_notes
-  def list_all_notes
-    @books = current_user.books  #Book.where(user_id: current_user) # Book.all
-  end
-
-  # GET /books/1/list_notes
-  def list_notes
-  end
-
   # GET /books/1
   def show
   end
@@ -22,8 +15,6 @@ class BooksController < ApplicationController
   # GET /books/new
   def new
     @book = current_user.books.new
-    #@book = Book.new
-    #@book.user_id = current_user
   end
 
   # GET /books/1/edit
@@ -33,9 +24,6 @@ class BooksController < ApplicationController
   # POST /books
   def create
     @book = current_user.books.new(book_params)
-    #@book = Book.new(book_params)
-    #@book.user_id = current_user.id
-
     if @book.save
       redirect_to @book, notice: 'Book was successfully created.'
     else
@@ -63,6 +51,20 @@ class BooksController < ApplicationController
     end
   end
 
+  # DOWNLOAD /book/1/download
+  def download 
+    send_data book_as_zip(@book).string,
+        filename: "#{sanitized_for_filename(@book.title)}.zip",
+        type: "application/zip"
+  end
+
+  # DOWNLOAD /books/download_all
+  def download_all 
+    send_data books_as_zip(current_user.books).string,
+        filename: "all_books.zip",
+        type: "application/zip"
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_book
@@ -71,7 +73,29 @@ class BooksController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def book_params
-      #params.require(:book).permit(:user_id, :title)
       params.require(:book).permit(:title)
     end
-end
+
+    def book_as_zip(book)
+      Zip::OutputStream.write_buffer do |stream|
+        book.notes.each do |note|
+          # add note to zip
+          stream.put_next_entry("#{note.title}.html")
+          stream.write note.content_as_html.html_safe
+        end  
+      end
+    end
+
+    def books_as_zip(books)
+      Zip::OutputStream.write_buffer do |stream|
+        books.each do |book|
+          book.notes.each do |note|
+            # add note to zip
+            stream.put_next_entry("#{book.title}/#{note.title}.html")
+            stream.write note.content_as_html.html_safe
+          end
+        end  
+      end
+    end
+
+  end
