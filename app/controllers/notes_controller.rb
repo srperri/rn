@@ -2,6 +2,7 @@ class NotesController < ApplicationController
   before_action :set_note, only: [:show, :edit, :update, :destroy, :download]
   before_action :set_book , except: [:create]
 
+  include ApplicationHelper
   # GET /notes/1
   def show
   end 
@@ -43,9 +44,9 @@ class NotesController < ApplicationController
   end
 
   # DOWNLOAD /notes/1/download
-  def download #falta sanitizar nombre
+  def download 
     send_data @note.content_as_html.html_safe, 
-              filename: "#{@note.title}.html",
+              filename: "#{sanitized_for_filename(@note.title)}.html",
               type: "application/text"
   end
 

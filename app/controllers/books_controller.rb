@@ -1,20 +1,13 @@
 class BooksController < ApplicationController
   before_action :set_book, only: [:show, :edit, :update, :destroy, :list_notes, :download]
 
+  include ApplicationHelper
+  
   # GET /books
   def index
     @books = current_user.books 
   end
   
-  # GET /books/list_all_notes
-  def list_all_notes
-    @books = current_user.books 
-  end
-
-  # GET /books/1/list_notes
-  def list_notes
-  end
-
   # GET /books/1
   def show
   end
@@ -59,14 +52,14 @@ class BooksController < ApplicationController
   end
 
   # DOWNLOAD /book/1/download
-  def download #falta sanitizar nombre
+  def download 
     send_data book_as_zip(@book).string,
-        filename: "#{@book.title}.zip",
+        filename: "#{sanitized_for_filename(@book.title)}.zip",
         type: "application/zip"
   end
 
   # DOWNLOAD /books/download_all
-  def download_all #falta sanitizar nombre
+  def download_all 
     send_data books_as_zip(current_user.books).string,
         filename: "all_books.zip",
         type: "application/zip"

@@ -6,11 +6,9 @@ Rails.application.routes.draw do
   end
   resources :books do 
     collection do
-      get 'list_all_notes'
       get 'download_all'
     end
     member do
-      get 'list_notes'
       get 'download'
     end
   end
