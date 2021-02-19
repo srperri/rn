@@ -7,11 +7,9 @@
 
 <p>
   <h1>Book: <%= @book.title %></h1>
-  
-  <p id="notice"><%= notice %></p>
-
-  <h3>Notes </h3>
   <br>
+  
+  <h3>Notes </h3>
   <br>
     
   <table>
@@ -28,10 +26,11 @@
         <tr>
           <td><%= note.title %></td>
           <td><%= note.content.size>8 ? note.content.first(5) + '...' : note.content.first(8)  %></td>
-          <td><%= link_to 'Show', note %></td>
-          <td><%= link_to 'Download', download_note_path(note) %></td>
-          <td><%= link_to 'Edit', edit_note_path(note) %></td>
-          <td><%= link_to 'Destroy', note, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+          <td><%= link_to 'Show', [@book ,note] %></td>
+          <td><%= link_to 'Download', download_book_note_path(@book, note) %></td>
+          <td><%= link_to 'Edit', edit_book_note_path(@book, note) %></td>
+          <td><%= link_to 'Destroy', [@book ,note], method: :delete, data: { confirm: 'Are you sure?' } %></td>
+
         </tr>
       <% end %>
     </tbody>
@@ -39,7 +38,7 @@
 
   <br>
 
-  <%= link_to 'New Note', new_note_path(book_id: @book.id)%>
+  <%= link_to 'New Note', new_book_note_path(book_id: @book.id)%>
 
 </p>
 
