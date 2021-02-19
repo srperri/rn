@@ -65,6 +65,4 @@ class NotesController < ApplicationController
       params.require(:note).permit(:book_id, :title, :content)
     end
 
-    
-
 end
