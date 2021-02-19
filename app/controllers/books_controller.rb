@@ -1,7 +1,7 @@
 class BooksController < ApplicationController
   before_action :set_book, only: [:show, :edit, :update, :destroy, :list_notes, :download]
 
-  include ApplicationHelper
+  include FilenameHelper
   
   # GET /books
   def index
@@ -80,7 +80,7 @@ class BooksController < ApplicationController
       Zip::OutputStream.write_buffer do |stream|
         book.notes.each do |note|
           # add note to zip
-          stream.put_next_entry("#{note.title}.html")
+          stream.put_next_entry("#{sanitized_for_filename(note.title)}.html")
           stream.write note.content_as_html.html_safe
         end  
       end
@@ -91,7 +91,7 @@ class BooksController < ApplicationController
         books.each do |book|
           book.notes.each do |note|
             # add note to zip
-            stream.put_next_entry("#{book.title}/#{note.title}.html")
+            stream.put_next_entry("#{sanitized_for_filename(book.title)}/#{sanitized_for_filename(note.title)}.html")
             stream.write note.content_as_html.html_safe
           end
         end  
