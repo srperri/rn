@@ -1,6 +1,6 @@
 class NotesController < ApplicationController
-  before_action :set_note, only: [:show, :edit, :update, :destroy, :download]
   before_action :set_book 
+  before_action :set_note, only: [:show, :edit, :update, :destroy, :download]
 
   include FilenameHelper
   # GET /notes/1
@@ -52,19 +52,25 @@ class NotesController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_book
-      @book = current_user.books.find(params[:book_id])
+      begin
+        @book = current_user.books.find(params[:book_id])
+      rescue ActiveRecord::RecordNotFound => e
+        redirect_to books_url, notice: "You don't own a book ##{params[:book_id]}."
+      end
     end
 
     # Use callbacks to share common setup or constraints between actions.
     def set_note
-      @note = current_user.notes.find(params[:id])
+      begin
+        @note = @book.notes.find(params[:id])
+      rescue ActiveRecord::RecordNotFound => e
+        redirect_to book_url(@book), notice: "Book ##{@book.id} doesn't have a note##{params[:id]}."
+      end
     end
 
     # Only allow a list of trusted parameters through.
     def note_params
       params.require(:note).permit(:book_id, :title, :content)
     end
-
-    
 
 end

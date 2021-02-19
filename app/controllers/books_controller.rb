@@ -68,7 +68,11 @@ class BooksController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_book
-      @book = current_user.books.find(params[:id])
+      begin
+        @book = current_user.books.find(params[:id])
+      rescue ActiveRecord::RecordNotFound => e
+        redirect_to books_url, notice: "You don't own a book ##{params[:id]}."
+      end
     end
 
     # Only allow a list of trusted parameters through.
