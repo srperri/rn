@@ -1,6 +1,6 @@
 class NotesController < ApplicationController
   before_action :set_note, only: [:show, :edit, :update, :destroy, :download]
-  before_action :set_book , except: [:create]
+  before_action :set_book 
 
   include FilenameHelper
   # GET /notes/1
@@ -18,7 +18,6 @@ class NotesController < ApplicationController
 
   # POST /notes
   def create
-    @book = current_user.books.find(note_params[:book_id])
     @note = @book.notes.new(note_params)
 
     if @note.save
