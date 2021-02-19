@@ -2,7 +2,8 @@ class NotesController < ApplicationController
   before_action :set_note, only: [:show, :edit, :update, :destroy, :download]
   before_action :set_book , except: [:create]
 
-  include ApplicationHelper
+  include FilenameHelper
+  
   # GET /notes/1
   def show
   end 
